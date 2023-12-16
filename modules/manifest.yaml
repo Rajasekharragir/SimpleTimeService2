@@ -1,0 +1,36 @@
+# SimpleTimeService-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: SimpleTimeService-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SimpleTimeService
+  template:
+    metadata:
+      labels:
+        app: SimpleTimeService
+    spec:
+      containers:
+      - name: SimpleTimeService-container
+        image: rajasekharragiri16540/SimpleTimeService-image:latest
+        ports:
+        - containerPort: 8080
+          name: http
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: SimpleTimeService-service
+spec:
+  selector:
+    app: SimpleTimeService
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
